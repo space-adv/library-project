@@ -8,9 +8,33 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <header>
+    <h1> Library <span>Book Collection</span></h1>
+  </header>
 
-    </div>
-    
+  <main>
+    <aside class="sidebar">
+      <h2>Add a Book</h2>
+      <form id="book-form">
+        <label>Title</label>
+        <input type="text" id="title" placeholder="Title of book" required>
+
+        <label>Author</label>
+        <input type="text" id="author" placeholder="Author" required>
+
+        <label>Pages</label>
+        <input type="number" id="pages" placeholder="Number of pages" required>
+
+        <label>
+          <input type="checkbox" id="hasRead"> Completed
+        </label>
+
+        <button type="submit">Add Book</button>
+      </form>
+    </aside>
+
+    <section id="library" class="library"></section>
+  </main>
+
 </body>
 </html>
