@@ -1,48 +1,53 @@
 let myLibrary = [];
 
-function Book(title, author, pages, hasRead) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.hasRead = hasRead;
-    this.id = crypto.randomUUID();
+class Book {
+    constructor(title, author, pages, hasRead) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.hasRead = hasRead;
+        this.id = crypto.randomUUID();
+    }    
 
-    this.toggleRead = function() {
+    toggleRead() {
         this.hasRead = !this.hasRead;
 
     }
-}
+}    
 
-function addBook(title, author, pages, hasRead) {
-    let book = new Book(title, author, pages, hasRead);
-
-    myLibrary.push(book);
-    console.log(book);
-    displayInfo();
-}
-
-function removeBook(id) {
-    myLibrary = myLibrary.filter(book => book.id !== id);
-    displayInfo()
-}
-
-function toggleReadStatus(id) {
-    let book = myLibrary.find(book => book.id === id);
-    if(book) {
-       book.toggleRead();
-       displayInfo()
+class Library{
+    constructor(){
+        this.books = [];
     }
-}
+
+    addBook(title, author, pages, hasRead) {
+        const book = new Book(title, author, pages, hasRead);
+        this.books.push(book);
+        this.displayInfo();
+    }
+
+    removeBook(id) {
+        this.books = this.books.filter(book => book.id !== id);
+        this.displayInfo();
+    }
+
+    toggleReadStatus(id) {
+        const book = this.books.filter(book => book.id === id);
+        if(book) {
+            book.toggleRead();
+            this.displayInfo();
+        }
+    }
 
 
-function displayInfo() {
-    let libraryDiv = document.getElementById("library");
+   displayInfo() {
+    const libraryDiv = document.getElementById("library");
     libraryDiv.innerHTML = "";
 
-    myLibrary.forEach(book => {
-        let bookDiv = document.createElement("div");
+    this.books.forEach(book => {
+        const bookDiv = document.createElement("div");
         bookDiv.classList.add("book");
-        bookDiv.setAttribute("data-id", book.id);
+        bookDiv.setAttribute("data-d", book.id);
 
         bookDiv.innerHTML = `
           <p>${book.title} by ${book.author}</p>
@@ -50,20 +55,25 @@ function displayInfo() {
           <p>Status: ${book.hasRead ? "Read" : "Plan to read"}</p>
           <button class="toggle-btn">Read</button>
           <button class="remove-btn">Remove</button>
-          `;
-        
+        `;
+
         libraryDiv.appendChild(bookDiv);
 
         bookDiv.querySelector(".remove-btn").addEventListener("click", () => {
-            removeBook(book.id);
+          this.removeBook(book.id);
         });
 
         bookDiv.querySelector(".toggle-btn").addEventListener("click", ()=> {
-            toggleReadStatus(book.id)
+          this.toggleReadStatus(book.id)
         });
     })
-    
+   }
+  
+
 }
+
+const library = new Library();
+
 
 
 
@@ -75,7 +85,7 @@ document.getElementById("book-form").addEventListener("submit", (e) => {
     let pages = document.getElementById("pages").value;
     let hasRead = document.getElementById("hasRead").checked;
 
-    addBook(title, author, pages, hasRead);
+    library.addBook(title, author, pages, hasRead);
 
     e.target.reset();
 })
